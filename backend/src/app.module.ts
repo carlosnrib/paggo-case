@@ -3,10 +3,11 @@ import { UploadController } from './upload.controller';
 import { OcrService } from './ocr.service';
 import { AuthModule } from './auth/auth.module';
 import { AnalysisModule } from './analysis/analysis.module';
+import { PrismaModule } from './prisma/prisma.module';
 
 @Module({
   controllers: [UploadController],
   providers: [OcrService],
-  imports: [AuthModule, AnalysisModule]
+  imports: [AuthModule, AnalysisModule, PrismaModule]
 })
 export class AppModule {}
