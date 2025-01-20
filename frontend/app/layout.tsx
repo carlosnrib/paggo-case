@@ -25,13 +25,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt-br">
+    <html lang="en-US">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <AuthContext>
-          <ToasterContext />
-          <div className="min-h-screen">{children}</div>
+            <ToasterContext />
+            <div className="min-h-screen">{children}</div>
         </AuthContext>
       </body>
     </html>

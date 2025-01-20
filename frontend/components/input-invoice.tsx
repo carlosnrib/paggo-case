@@ -4,11 +4,11 @@ import { useState } from "react";
 import api from "@/services/api";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { CheckCircle, Loader2 } from "lucide-react";
+import { CheckCircle, Loader2, Upload } from "lucide-react";
 import toast from "react-hot-toast";
 import AIResume from "@/components/ai-resume";
 
-const InputInvoice = () => {
+const InputInvoice = ({ userId }: { userId: string }) => {
     const [file, setFile] = useState<File | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [isUploadSuccess, setIsUploadSuccess] = useState(false);
@@ -29,16 +29,19 @@ const InputInvoice = () => {
 
         const formData = new FormData();
         formData.append("file", file);
+        formData.append("userId", userId);
 
         setIsLoading(true);
         try {
-            const uploadResponse = await api.post("/upload", formData, {
+            const uploadResponse = await api.post("/invoices", formData, {
                 headers: { "Content-Type": "multipart/form-data" },
             });
             setIsUploadSuccess(true);
             const invoiceData = uploadResponse.data.text;
+            const invoiceId = uploadResponse.data.invoiceId;
 
             const analysisResponse = await api.post("/analysis", {
+                invoice_id: invoiceId,
                 invoice_data: invoiceData,
             });
             setIsAnalysisSuccess(true);
@@ -61,7 +64,12 @@ const InputInvoice = () => {
                     Please upload your invoice image for an AI analysis.
                 </p>
 
-                <Input className="w-full" type="file" onChange={handleFileChange} />
+                <Input 
+                    className="w-full" 
+                    type="file" 
+                    accept="image/*"
+                    onChange={handleFileChange} 
+                />
                 <Button
                     onClick={handleUpload}
                     className="mt-4 w-full"

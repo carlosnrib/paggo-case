@@ -11,51 +11,55 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express';
 import { PrismaService } from '../prisma/prisma.service'; 
 import { OcrService } from './ocr.service';
-  
-  @Controller('invoices')
-  export class UploadController {
-    constructor(
-      private readonly ocrService: OcrService,
-      private readonly prisma: PrismaService,
-    ) {}
-  
-    @Post()
-    @UseInterceptors(FileInterceptor('file'))
-    async uploadFile(
-      @UploadedFile() file: Express.Multer.File,
-      @Body('userId') userId: string,
-    ) {
-      if (!file) {
-        throw new Error('No file uploaded');
-      }
+import { CloudinaryService } from '../cloudinary/cloudinary.service';
 
-      if (!userId) {
-        throw new BadRequestException('UserId is required');
-      }
+@Controller('invoices')
+export class UploadController {
+  constructor(
+    private readonly ocrService: OcrService,
+    private readonly prisma: PrismaService,
+    private readonly cloudinaryService: CloudinaryService,
+  ) {}
 
-      const invoice = await this.prisma.invoice.create({
-        data: {
-          image: file.buffer, 
-          userId: userId, 
-          createdAt: new Date(),
-        },
-      });
-  
-      const result = await this.ocrService.processImage(file.buffer);
-      return { text: result, invoiceId: invoice.id };
+  @Post()
+  @UseInterceptors(FileInterceptor('file'))
+  async uploadFile(
+    @UploadedFile() file: Express.Multer.File,
+    @Body('userId') userId: string,
+  ) {
+    if (!file) {
+      throw new Error('No file uploaded');
     }
 
-    @Get(':userId')
-    async getInvoicesByUserId(@Param('userId') userId: string) {
-      if (!userId) {
-        throw new BadRequestException('UserId is required');
-      }
-
-      const invoices = await this.prisma.invoice.findMany({
-        where: { userId }, 
-      });
-
-      return {invoices}; 
+    if (!userId) {
+      throw new BadRequestException('UserId is required');
     }
+
+    const cloudinaryUrl = await this.cloudinaryService.uploadImage(file.buffer, 'invoices');
+
+    const invoice = await this.prisma.invoice.create({
+      data: {
+        imageUrl: cloudinaryUrl, 
+        userId: userId, 
+        createdAt: new Date(),
+      },
+    });
+
+    const result = await this.ocrService.processImage(file.buffer);
+
+    return { text: result, invoiceId: invoice.id };
   }
-  
+
+  @Get(':userId')
+  async getInvoicesByUserId(@Param('userId') userId: string) {
+    if (!userId) {
+      throw new BadRequestException('UserId is required');
+    }
+
+    const invoices = await this.prisma.invoice.findMany({
+      where: { userId }, 
+    });
+
+    return { invoices };
+  }
+}

@@ -12,14 +12,16 @@ import { useRouter } from "next/navigation";
 type Variant = "LOGIN" | "REGISTER";
 
 const AuthForm = ({ onRegisterClick }: any) => {
-  const { status } = useSession();
+  const { status, data: session } = useSession();
   const router = useRouter();
   const [variant, setVariant] = useState<Variant>("LOGIN");
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (status === "authenticated") {
-      router.push("/platform");
+      if (session?.user?.id) {
+        router.push(`/${session.user.id}/platform`);
+      }
     }
   }, [status, router]);
 
@@ -80,18 +82,20 @@ const AuthForm = ({ onRegisterClick }: any) => {
         redirect: false,
       })
         .then((callback) => {
-          console.log(callback)
           if (callback?.error) {
             toast.error("Incorrect username or password !");
           }
 
           if (callback?.ok) {
             toast.success("Login successful!");
-            router.push("/platform");
+            if (session?.user?.id) {
+              router.push(`/${session.user.id}/platform`);
+            }
           }
         })
         .catch((error) => {
-          toast.error("Algo deu errado!");
+          console.log(error)
+          toast.error("Something went wrong!");
         })
         .finally(() => setIsLoading(false));
     }

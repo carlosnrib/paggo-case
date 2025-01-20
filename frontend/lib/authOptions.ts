@@ -1,6 +1,6 @@
-
 import CredentialsProvider from "next-auth/providers/credentials";
 import axios from "axios";
+import { jwtDecode } from "jwt-decode";
 import NextAuth, { AuthOptions, DefaultSession, DefaultUser } from "next-auth";
 
 declare module "next-auth" {
@@ -41,10 +41,11 @@ export const authOptions: AuthOptions = {
               credentials
             );
   
-            if (data) {
+            if (data && data.access_token) {
+              const decodedToken = jwtDecode<{ sub: string, username: string }>(data.access_token);
               return {
-                id: data.id,
-                username: data.username,
+                id: decodedToken.sub,
+                username: decodedToken.username,
               };
             }
   
@@ -76,4 +77,3 @@ export const authOptions: AuthOptions = {
       },
     },
 };
-  
