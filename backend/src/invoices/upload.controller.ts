@@ -1,16 +1,18 @@
 import {
   Controller,
   Post,
+  Get,
+  Param,
   UploadedFile,
   UseInterceptors,
   Body,
   BadRequestException,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { PrismaService } from './prisma/prisma.service'; 
+import { PrismaService } from '../prisma/prisma.service'; 
 import { OcrService } from './ocr.service';
   
-  @Controller('upload')
+  @Controller('invoices')
   export class UploadController {
     constructor(
       private readonly ocrService: OcrService,
@@ -41,6 +43,19 @@ import { OcrService } from './ocr.service';
   
       const result = await this.ocrService.processImage(file.buffer);
       return { text: result, invoiceId: invoice.id };
+    }
+
+    @Get(':userId')
+    async getInvoicesByUserId(@Param('userId') userId: string) {
+      if (!userId) {
+        throw new BadRequestException('UserId is required');
+      }
+
+      const invoices = await this.prisma.invoice.findMany({
+        where: { userId }, 
+      });
+
+      return {invoices}; 
     }
   }
   

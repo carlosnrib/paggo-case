@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { UploadController } from './upload.controller';
-import { OcrService } from './ocr.service';
+import { UploadController } from './invoices/upload.controller';
+import { OcrService } from './invoices/ocr.service';
 import { AuthModule } from './auth/auth.module';
 import { AnalysisModule } from './analysis/analysis.module';
 import { PrismaModule } from './prisma/prisma.module';
