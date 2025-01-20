@@ -13,7 +13,7 @@ interface UploadsHistoryProps {
 
 const UploadsHistory: React.FC<UploadsHistoryProps> = ({ history }) => {
     return (
-        <div>
+        <div className="m-6">
             <h2 className="text-xl font-semibold my-4">History</h2>
             <Table>
                 <TableHeader>
