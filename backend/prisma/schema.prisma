@@ -14,9 +14,32 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(cuid())
+  id        String    @id @default(uuid())
   name      String
-  username  String   @unique
+  username  String    @unique
   password  String
-  createdAt DateTime @default(now())
+  createdAt DateTime  @default(now())
+  invoices  Invoice[] 
+  chats     Chat[]    
 }
+
+model Invoice {
+  id          String    @id @default(uuid())
+  image       String    
+  aiAnalysis  String?   
+  createdAt   DateTime  @default(now())
+  userId      String
+  user        User      @relation(fields: [userId], references: [id])
+  chats       Chat[]    
+}
+
+model Chat {
+  id          String    @id @default(uuid())
+  message     String    
+  timestamp   DateTime  @default(now())
+  userId      String
+  user        User      @relation(fields: [userId], references: [id])
+  invoiceId   String
+  invoice     Invoice   @relation(fields: [invoiceId], references: [id])
+}
+
