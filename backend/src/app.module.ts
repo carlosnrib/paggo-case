@@ -5,10 +5,11 @@ import { AuthModule } from './auth/auth.module';
 import { AnalysisModule } from './analysis/analysis.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { CloudinaryModule } from './cloudinary/cloudinary.module';
+import { ChatModule } from './chat/chat.module';
 
 @Module({
   controllers: [UploadController],
   providers: [OcrService],
-  imports: [AuthModule, AnalysisModule, PrismaModule, CloudinaryModule]
+  imports: [AuthModule, AnalysisModule, PrismaModule, CloudinaryModule, ChatModule]
 })
 export class AppModule {}

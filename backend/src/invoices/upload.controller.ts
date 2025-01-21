@@ -37,15 +37,16 @@ export class UploadController {
 
     const cloudinaryUrl = await this.cloudinaryService.uploadImage(file.buffer, 'invoices');
 
+    const result = await this.ocrService.processImage(file.buffer);
+
     const invoice = await this.prisma.invoice.create({
       data: {
         imageUrl: cloudinaryUrl, 
         userId: userId, 
         createdAt: new Date(),
+        invoiceData: result,
       },
     });
-
-    const result = await this.ocrService.processImage(file.buffer);
 
     return { text: result, invoiceId: invoice.id };
   }

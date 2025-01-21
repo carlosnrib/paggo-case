@@ -14,6 +14,8 @@ const InputInvoice = ({ userId }: { userId: string }) => {
     const [isUploadSuccess, setIsUploadSuccess] = useState(false);
     const [isAnalysisSuccess, setIsAnalysisSuccess] = useState(false);
     const [analysisResult, setAnalysisResult] = useState<string | null>(null);
+    const [invoiceData, setInvoiceData] = useState('')
+    const [invoiceId, setInvoiceId] = useState('')
 
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files && event.target.files.length > 0) {
@@ -39,6 +41,9 @@ const InputInvoice = ({ userId }: { userId: string }) => {
             setIsUploadSuccess(true);
             const invoiceData = uploadResponse.data.text;
             const invoiceId = uploadResponse.data.invoiceId;
+
+            setInvoiceData(uploadResponse.data.text);
+            setInvoiceId(uploadResponse.data.invoiceId);
 
             const analysisResponse = await api.post("/analysis", {
                 invoice_id: invoiceId,
@@ -99,7 +104,7 @@ const InputInvoice = ({ userId }: { userId: string }) => {
 
             {analysisResult && (
                 <div className="w-full lg:w-2/3 bg-gray-50 shadow rounded-lg p-6 overflow-auto">
-                    <AIResume ai_analysis={analysisResult} chat_id="1" />
+                    <AIResume ai_analysis={analysisResult} invoiceData={invoiceData} invoiceId={invoiceId} userId={userId}/>
                 </div>
             )}
         </div>

@@ -25,7 +25,8 @@ model User {
 
 model Invoice {
   id          String    @id @default(uuid())
-  imageUrl    String    
+  imageUrl    String
+  invoiceData String   
   aiAnalysis  String?   
   createdAt   DateTime  @default(now())
   userId      String
@@ -35,8 +36,7 @@ model Invoice {
 
 model Chat {
   id          String    @id @default(uuid())
-  message     String    
-  timestamp   DateTime  @default(now())
+  message     Json?    
   userId      String
   user        User      @relation(fields: [userId], references: [id])
   invoiceId   String
