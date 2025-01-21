@@ -8,6 +8,8 @@ import { signIn, useSession } from "next-auth/react";
 import React from "react";
 import PropTypes from "prop-types";
 import { useRouter } from "next/navigation";
+import { Button } from "./ui/button";
+import { Loader2 } from "lucide-react";
 
 type Variant = "LOGIN" | "REGISTER";
 
@@ -168,15 +170,17 @@ const AuthForm: React.FC<AuthFormProps> = ({ onRegisterClick }) => {
             </div>
           </div>
 
-          <div>
-            <button
+          <Button
+              className="flex w-full text-black justify-center rounded-md bg-[#939aa1] px-3 py-1.5 text-sm font-semibold leading-6 shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
               disabled={isLoading}
               type="submit"
-              className="flex w-full justify-center rounded-md bg-[#939aa1] px-3 py-1.5 text-sm font-semibold leading-6 shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
-            >
-              {variant === "LOGIN" ? "Login" : "Register"}
-            </button>
-          </div>
+          >
+              {isLoading ? (
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              ) : (
+                variant === "LOGIN" ? "Login" : "Register"
+              )}
+          </Button>
         </form>
 
         <div className="mt-6">
