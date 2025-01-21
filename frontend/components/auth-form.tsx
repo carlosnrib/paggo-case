@@ -11,7 +11,11 @@ import { useRouter } from "next/navigation";
 
 type Variant = "LOGIN" | "REGISTER";
 
-const AuthForm = ({ onRegisterClick }: any) => {
+interface AuthFormProps {
+  onRegisterClick: (variant: Variant) => void;
+}
+
+const AuthForm: React.FC<AuthFormProps> = ({ onRegisterClick }) => {
   const { status, data: session } = useSession();
   const router = useRouter();
   const [variant, setVariant] = useState<Variant>("LOGIN");

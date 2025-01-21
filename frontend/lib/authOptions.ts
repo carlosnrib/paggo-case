@@ -1,7 +1,7 @@
 import CredentialsProvider from "next-auth/providers/credentials";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
-import NextAuth, { AuthOptions, DefaultSession, DefaultUser } from "next-auth";
+import { AuthOptions, DefaultSession, DefaultUser } from "next-auth";
 
 declare module "next-auth" {
   interface Session extends DefaultSession {

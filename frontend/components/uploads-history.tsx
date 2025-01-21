@@ -28,9 +28,15 @@ type ChatProps = {
     userId: string;
 };
 
+type Message = {
+    id: string;
+    UserMessage?: string;
+    AiMessage?: string;
+  };
+
 const UploadsHistory: React.FC<UploadsHistoryProps> = ({ history }) => {
     const [isChatOpen, setIsChatOpen] = useState(false);
-    const [chatMessages, setChatMessages] = useState<any[]>([]);
+    const [chatMessages, setChatMessages] = useState<Message[]>([]);
     const [chatData, setChatData] = useState<ChatProps | null>(null);
 
     const fetchChatData = async (item: UploadHistoryItem) => {

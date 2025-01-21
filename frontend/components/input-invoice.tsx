@@ -4,7 +4,7 @@ import { useState } from "react";
 import api from "@/services/api";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { CheckCircle, Loader2, Upload } from "lucide-react";
+import { CheckCircle, Loader2 } from "lucide-react";
 import toast from "react-hot-toast";
 import AIResume from "@/components/ai-resume";
 
