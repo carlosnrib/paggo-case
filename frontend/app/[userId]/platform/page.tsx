@@ -1,11 +1,10 @@
 import InputInvoice from "@/components/input-invoice";
 import Navbar from "@/components/navbar";
 import UploadsHistory from "@/components/uploads-history";
-import { FC } from "react";
 import api from "@/services/api";
 
-const PlatformPage: FC<{ params: { userId: string } }> = async ({ params }) => {
-  const { userId } = params;
+export default async function PlatformPage({params}: {params: Promise<{ userId: string }>}){
+  const { userId }  = await params;
 
   const fetchHistory = async (chatId: string) => {
     try {
@@ -27,5 +26,3 @@ const PlatformPage: FC<{ params: { userId: string } }> = async ({ params }) => {
         </div>
   );
 };
-
-export default PlatformPage;
