@@ -1,7 +1,7 @@
 import CredentialsProvider from "next-auth/providers/credentials";
-import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import { AuthOptions, DefaultSession, DefaultUser } from "next-auth";
+import api from "@/services/api";
 
 declare module "next-auth" {
   interface Session extends DefaultSession {
@@ -36,8 +36,8 @@ export const authOptions: AuthOptions = {
         },
         async authorize(credentials) {
           try {
-            const { data } = await axios.post(
-              `${process.env.NEXT_API_URL}/auth/login`,
+            const { data } = await api.post(
+              `/auth/login`,
               credentials
             );
   
