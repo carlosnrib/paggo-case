@@ -36,7 +36,6 @@ const AuthForm: React.FC<AuthFormProps> = ({ onRegisterClick }) => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
   } = useForm<FieldValues>({
     defaultValues: {
       name: "",
