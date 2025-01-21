@@ -37,7 +37,7 @@ export const authOptions: AuthOptions = {
         async authorize(credentials) {
           try {
             const { data } = await axios.post(
-              `${process.env.API_URL}/auth/login`,
+              `${process.env.NEXT_API_URL}/auth/login`,
               credentials
             );
   
