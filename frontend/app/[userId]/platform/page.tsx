@@ -5,7 +5,7 @@ import { FC } from "react";
 import api from "@/services/api";
 
 const PlatformPage: FC<{ params: { userId: string } }> = async ({ params }) => {
-  const { userId } = await params;
+  const { userId } = params;
 
   const fetchHistory = async (chatId: string) => {
     try {
